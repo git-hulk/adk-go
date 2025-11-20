@@ -81,14 +81,10 @@ func nlPlanningResponseProcessor(ctx agent.InvocationContext, req *model.LLMRequ
 		return nil
 	}
 
-	// Process the LLM response for Plan-Re-Act planner
-	// TODO: Need to implement CallbackContext creation and event yielding
-	// This is complex as we need to create a callback context and potentially yield events
-	// For now, just process the response parts
-	if processedParts := p.ProcessPlanningResponse(nil, resp.Content.Parts); processedParts != nil {
+	callbackContext := icontext.NewCallbackContext(ctx)
+	if processedParts := p.ProcessPlanningResponse(callbackContext, resp.Content.Parts); processedParts != nil {
 		resp.Content.Parts = processedParts
 	}
-
 	return nil
 }
 

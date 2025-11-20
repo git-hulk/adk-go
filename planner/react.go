@@ -53,7 +53,7 @@ func (p *ReActPlanner) BuildPlanningInstruction(readonlyContext agent.ReadonlyCo
 }
 
 // ProcessPlanningResponse implements BasePlanner.
-func (p *ReActPlanner) ProcessPlanningResponse(callbackContext agent.CallbackContext, responseParts []*genai.Part) []*genai.Part {
+func (p *ReActPlanner) ProcessPlanningResponse(_ agent.CallbackContext, responseParts []*genai.Part) []*genai.Part {
 	if len(responseParts) == 0 {
 		return nil
 	}
