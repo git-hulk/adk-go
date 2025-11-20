@@ -218,7 +218,6 @@ func getAuthorForEvent(ctx InvocationContext, event *session.Event) string {
 // then it skips agent run and returns callback result.
 func runBeforeAgentCallbacks(ctx InvocationContext) (*session.Event, error) {
 	agent := ctx.Agent()
-
 	callbackCtx := &callbackContext{
 		Context:           ctx,
 		invocationContext: ctx,
@@ -376,6 +375,19 @@ func (c *callbackContextState) Set(key string, val any) error {
 
 func (c *callbackContextState) All() iter.Seq2[string, any] {
 	return c.ctx.invocationContext.Session().State().All()
+}
+
+// NewCallbackContext creates a new CallbackContext based on the given
+// InvocationContext and EventActions.
+func NewCallbackContext(ctx InvocationContext, actions *session.EventActions) CallbackContext {
+	if actions == nil {
+		actions = &session.EventActions{StateDelta: make(map[string]any)}
+	}
+	return &callbackContext{
+		Context:           ctx,
+		invocationContext: ctx,
+		actions:           actions,
+	}
 }
 
 type invocationContext struct {
