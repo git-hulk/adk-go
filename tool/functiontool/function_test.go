@@ -16,6 +16,7 @@ package functiontool_test
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"iter"
 	"net/http"
@@ -569,10 +570,13 @@ func TestNew_InvalidInputType(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			_, err := tc.createTool()
 			if err == nil {
-				t.Fatalf("New() succeeded, want error containing %q", tc.wantErrMsg)
+				t.Fatalf("functiontool.New() succeeded, want error containing %q", tc.wantErrMsg)
+			}
+			if !errors.Is(err, functiontool.ErrInvalidArgument) {
+				t.Fatalf("functiontool.New() error = %v, want %v", err, functiontool.ErrInvalidArgument)
 			}
 			if !strings.Contains(err.Error(), tc.wantErrMsg) {
-				t.Errorf("New() error = %q, want error containing %q", err.Error(), tc.wantErrMsg)
+				t.Errorf("functiontool.New() error = %q, want error containing %q", err.Error(), tc.wantErrMsg)
 			}
 		})
 	}

@@ -16,6 +16,7 @@
 package functiontool
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -50,6 +51,9 @@ type Config struct {
 // It takes a tool.Context and a generic argument type, and returns a generic result type.
 type Func[TArgs, TResults any] func(tool.Context, TArgs) (TResults, error)
 
+// ErrInvalidArgument indicates the input parameter type is invalid.
+var ErrInvalidArgument = errors.New("invalid argument")
+
 // New creates a new tool with a name, description, and the provided handler.
 // Input schema is automatically inferred from the input and output types.
 func New[TArgs, TResults any](cfg Config, handler Func[TArgs, TResults]) (tool.Tool, error) {
@@ -62,7 +66,7 @@ func New[TArgs, TResults any](cfg Config, handler Func[TArgs, TResults]) (tool.T
 		argsType = argsType.Elem()
 	}
 	if argsType == nil || argsType.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("input must be a struct type, got: %v", argsType)
+		return nil, fmt.Errorf("input must be a struct type, got: %v: %w", argsType, ErrInvalidArgument)
 	}
 
 	ischema, err := resolvedSchema[TArgs](cfg.InputSchema)
