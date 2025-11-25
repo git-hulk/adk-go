@@ -66,7 +66,7 @@ func New[TArgs, TResults any](cfg Config, handler Func[TArgs, TResults]) (tool.T
 		argsType = argsType.Elem()
 	}
 	if argsType == nil || argsType.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("input must be a struct type, got: %v: %w", argsType, ErrInvalidArgument)
+		return nil, fmt.Errorf("input must be a struct type or struct pointer type, got: %v: %w", argsType, ErrInvalidArgument)
 	}
 
 	ischema, err := resolvedSchema[TArgs](cfg.InputSchema)
