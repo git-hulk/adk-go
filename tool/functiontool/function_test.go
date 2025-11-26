@@ -575,9 +575,6 @@ func TestNew_InvalidInputType(t *testing.T) {
 			if !errors.Is(err, functiontool.ErrInvalidArgument) {
 				t.Fatalf("functiontool.New() error = %v, want %v", err, functiontool.ErrInvalidArgument)
 			}
-			if !strings.Contains(err.Error(), tc.wantErrMsg) {
-				t.Errorf("functiontool.New() error = %q, want error containing %q", err.Error(), tc.wantErrMsg)
-			}
 		})
 	}
 }

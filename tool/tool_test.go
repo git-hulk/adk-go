@@ -47,7 +47,7 @@ func TestTypes(t *testing.T) {
 			name: "FunctionTool",
 			constructor: func() (tool.Tool, error) {
 				return functiontool.New(functiontool.Config{}, func(_ tool.Context, input intInput) (intOutput, error) {
-					return intOutput{Value: input.Value}, nil
+					return intOutput(input), nil
 				})
 			},
 			expectedTypes: []string{requestProc, functionTool},
