@@ -610,7 +610,7 @@ func TestNew_InvalidInputType(t *testing.T) {
 				t.Fatalf("functiontool.New() error = %v, want %v", err, functiontool.ErrInvalidArgument)
 			}
 		})
-  }
+	}
 }
 
 func TestFunctionTool_PanicRecovery(t *testing.T) {
