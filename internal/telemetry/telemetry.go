@@ -207,8 +207,15 @@ func TraceLLMCall(spans []trace.Span, agentCtx agent.InvocationContext, llmReque
 		if llmRequest.Config.MaxOutputTokens != 0 {
 			attributes = append(attributes, attribute.Int("gen_ai.request.max_tokens", int(llmRequest.Config.MaxOutputTokens)))
 		}
-
-		// TODO: add usage_metadata and finish_reason once ADK has them.
+		if event.FinishReason != "" {
+			attributes = append(attributes, attribute.String("gen_ai.response.finish_reason", string(event.FinishReason)))
+		}
+		if event.UsageMetadata != nil {
+			attributes = append(attributes, attribute.Int("gen_ai.response.prompt_tokens", int(event.UsageMetadata.PromptTokenCount)))
+			attributes = append(attributes, attribute.Int("gen_ai.response.completion_tokens", int(event.UsageMetadata.CandidatesTokenCount)))
+			attributes = append(attributes, attribute.Int("gen_ai.response.cached_content_tokens", int(event.UsageMetadata.CachedContentTokenCount)))
+			attributes = append(attributes, attribute.Int("gen_ai.response.total_tokens", int(event.UsageMetadata.TotalTokenCount)))
+		}
 
 		span.SetAttributes(attributes...)
 		span.End()
