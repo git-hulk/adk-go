@@ -76,7 +76,7 @@ func (builder *ResponseBuilder) FromMessage(message *anthropic.Message) (*model.
 		Content:        content,
 		FinishReason:   builder.buildFinishReason(message.StopReason),
 		UsageMetadata:  builder.extractUsage(message.Usage),
-		CustomMetadata: make(map[string]any, 0),
+		CustomMetadata: make(map[string]any),
 	}
 	if message.StopReason != "" {
 		llmResponse.CustomMetadata["stop_reason"] = message.StopReason
