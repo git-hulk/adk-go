@@ -98,7 +98,7 @@ func NewModel(ctx context.Context, modelName string, cfg *Config) (model.LLM, er
 		}
 		opts = append(opts, option.WithAPIKey(cfg.APIKey))
 	case ProviderAWSBedrock:
-		// Do nothing special for AWS Bedrock for now. User need to provide the client option
+		// Do nothing special for AWS Bedrock for now. Users need to provide the client option
 		// via `bedrock.WithConfig()` or `bedrock.WithLoadDefaultConfig()`.
 	default:
 		projectID := os.Getenv(envProjectID)
