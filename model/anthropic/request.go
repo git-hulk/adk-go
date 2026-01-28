@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Package anthropic implements the model.LLM interface backed by Claude models
-// served via Vertex AI.
+// available via multiple providers, including Vertex AI, the Anthropic API, and AWS Bedrock.
 
 package anthropic
 
