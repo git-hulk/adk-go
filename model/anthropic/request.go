@@ -47,12 +47,21 @@ func (builder *RequestBuilder) FromLLMRequest(req *model.LLMRequest) (*anthropic
 		messages = append(messages, message)
 	}
 
-	systemInstruction := builder.buildSystemInstruction(req.Config.SystemInstruction)
-	params := &anthropic.MessageNewParams{
-		Messages:  messages,
-		System:    systemInstruction,
-		Model:     anthropic.Model(builder.modelName),
-		MaxTokens: builder.maxTokens,
+	var params *anthropic.MessageNewParams
+	if req.Config != nil {
+		systemInstruction := builder.buildSystemInstruction(req.Config.SystemInstruction)
+		params = &anthropic.MessageNewParams{
+			Messages:  messages,
+			System:    systemInstruction,
+			Model:     anthropic.Model(builder.modelName),
+			MaxTokens: builder.maxTokens,
+		}
+	} else {
+		params = &anthropic.MessageNewParams{
+			Messages:  messages,
+			Model:     anthropic.Model(builder.modelName),
+			MaxTokens: builder.maxTokens,
+		}
 	}
 	if err := builder.appendConfigOptions(params, req.Config); err != nil {
 		return nil, err
